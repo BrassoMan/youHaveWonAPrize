@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>McDonal's</title>
+</head>
+<body>
+  <div class='mainContainer'>
+    <div id='heading' onclick='roll()'>McDonal's Prize Giveaway</div>
+    <div class='rollerContainer'>
+      <div class='roller1'>
+        <img src='q.png' class='rollerImg'></img>
+      </div>
+      <div class='roller2'>
+        <img src='q.png' class='rollerImg'></img>
+      </div>
+      <div class='roller3'>
+        <img src='q.png' class='rollerImg'></img>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
+<style media="screen">
+body {
+  margin: 0;
+  overflow: hidden;
+}
+.mainContainer {
+  background: lightblue;
+  display: grid;
+  grid-template-columns: 40px auto 40px;
+  grid-template-rows: 1fr 5fr;
+  overflow: hidden;
+  min-height: 100vh
+}
+#heading {
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  font-size: 60px;
+  background: lightgreen;
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  cursor: pointer;
+}
+.rollerContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  width: 100vw;
+}
+ .roller1 {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+
+}
+.roller2 {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+.roller3 {
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+}
+
+.rollerImg {
+  width: 30vw;
+}
+</style>
+
+<script type="text/javascript">
+let imgLinks = ['http://52.62.74.10/bigmac.png',
+                'http://52.62.74.10/fries.png',
+                'http://52.62.74.10/sausage.png'];
+let ourImages = document.getElementsByClassName('rollerImg');
+
+function randImages(){
+  Array.from(ourImages).forEach((item, i) => {
+    let judge = Math.random();
+    if (judge < 0.01) {
+      item.src = imgLinks[0];
+    } else if (judge < 0.05) {
+      item.src = imgLinks[1];
+    } else {
+      item.src = imgLinks[2];
+    }
+  });
+}
+
+function roll() {
+  document.getElementById('heading').onclick = '';
+  Array.from(ourImages).forEach((item, i) => {
+    item.src = imgLinks[i];
+  });
+  var whizzing = setInterval(whizz, 100);
+  setTimeout( () => {
+    clearInterval(whizzing);
+    randImages();
+    prize();
+    document.getElementById('heading').onclick = roll;
+  }, 3000);
+}
+
+function whizz() {
+  Array.from(ourImages).forEach((item, i) => {
+    if (item.src == imgLinks[0]) {
+      item.src = imgLinks[1];
+    } else if (item.src == imgLinks[1]) {
+      item.src = imgLinks[2];
+    } else {
+      item.src = imgLinks[0];
+    }
+  });
+}
+
+function prize() {
+  if ((ourImages[0].src == ourImages[1].src) && (ourImages[2].src == ourImages[0].src)) {
+    alert('baby, a triple!')
+    // are they sausages???
+    if(ourImages[0].src == imgLinks[2]) {
+      makeLTT();
+      makeTorvalds();
+      teleportLTT();
+    }
+  }
+}
+
+function makeTorvalds() {
+  const image = document.createElement('img')
+  image.src  = 'torvalds.png'
+  image.style = 'position: absolute; right: -40px; top: 50px;'
+  document.querySelector('body').appendChild(image)
+}
+
+function makeLTT() {
+  const image = document.createElement('img')
+  image.id = 'ltt';
+  image.src  = 'LTTstore.png'
+  image.style = 'position: absolute; left: 45px; top: 90%;'
+  document.querySelector('body').appendChild(image)
+}
+
+function teleportLTT() {
+  var elem = document.getElementById("ltt");
+  var pos = window.innerHeight - 20;
+// change back to 10 for slow-movement
+  var id = setInterval(frame, 10);
+  function frame() {
+    if (pos < -1060) {
+      clearInterval(id);
+    } else {
+      pos--;
+      elem.style.top = pos + 'px';
+      // elem.style.left = pos + 'px';
+    }
+  }
+}
+
+</script>
