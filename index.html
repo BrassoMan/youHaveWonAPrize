@@ -77,6 +77,14 @@ let imgLinks = ['http://52.62.74.10/bigmac.png',
                 'http://52.62.74.10/sausage.png'];
 let ourImages = document.getElementsByClassName('rollerImg');
 
+preloadImage(torvalds.png);
+
+function preloadImage(url)
+{
+    var img=new Image();
+    img.src=url;
+}
+
 function randImages(){
   Array.from(ourImages).forEach((item, i) => {
     let judge = Math.random();
